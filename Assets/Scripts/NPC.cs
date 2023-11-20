@@ -11,7 +11,8 @@ public class NPC : MonoBehaviour
     {
         Patrol,
         Chase,
-        Attack
+        Attack,
+        Retreat
     }
 
     [SerializeField]
@@ -26,6 +27,8 @@ public class NPC : MonoBehaviour
     Material ChaseMaterial;
     [SerializeField]
     Material AttackMaterial;
+    [SerializeField]
+    Material RetreatMaterial;
     [SerializeField]
     float ChaseRange = 7f;
     [SerializeField]
@@ -78,6 +81,9 @@ public class NPC : MonoBehaviour
                 break;
             case NPCStates.Attack:
                 Attack();
+                break;
+            case NPCStates.Retreat:
+                Retreat();
                 break;
             default:
                 Patrol();
@@ -136,6 +142,44 @@ public class NPC : MonoBehaviour
             // Increment patrol point and reset if needed
             nextPatrolPoint = (nextPatrolPoint + 1) % PatrolPoints.Length;
             navMeshAgent.SetDestination(PatrolPoints[nextPatrolPoint]);
+        }
+    }
+
+    private void Retreat()
+    {
+
+        int farthestPointIndex = 0;
+        float maxDistance = 0;
+
+        // Find the farthest patrol point from the player
+        for (int i = 0; i < PatrolPoints.Length; i++)
+        {
+            float distance = Vector3.Distance(PatrolPoints[i], Player.position);
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                farthestPointIndex = i;
+            }
+        }
+
+        // Set the destination to the farthest patrol point
+        navMeshAgent.isStopped = false; // Ensure the agent can move
+        navMeshAgent.SetDestination(PatrolPoints[farthestPointIndex]);
+        meshRenderer.material = RetreatMaterial; // Change to retreat material
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        {
+            currentState = NPCStates.Patrol; // Transition back to Patrol state
+            meshRenderer.material = PatrolMaterial; // Change material to patrol material
+            navMeshAgent.SetDestination(PatrolPoints[nextPatrolPoint]); // Reset to the next patrol point
+        }
+        // Debugging
+        Debug.Log("Retreating to point: " + farthestPointIndex);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player")) // Make sure the player has a tag "Player"
+        {
+            currentState = NPCStates.Retreat; // Change state to Retreat
         }
     }
 }
