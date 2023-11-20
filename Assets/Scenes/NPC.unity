@@ -529,6 +529,31 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1973391181}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[0].x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[0].z
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[1].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[1].z
+      value: -9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1603,6 +1628,31 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1973391181}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[1].x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[1].z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[2].x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951973925071252269, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: PatrolPoints.Array.data[2].z
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

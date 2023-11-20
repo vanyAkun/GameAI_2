@@ -45,22 +45,12 @@ public class NPC : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        GeneratePatrolPoints();
+     
         navMeshAgent.SetDestination(PatrolPoints[nextPatrolPoint]);
         meshRenderer = GetComponent<MeshRenderer>();
     }
-    void GeneratePatrolPoints()
-    {
-        PatrolPoints = new Vector3[5];
-        for (int i = 0; i < PatrolPoints.Length; i++)
-        {
-            PatrolPoints[i] = new Vector3(
-                UnityEngine.Random.Range(-10f, 10f), // Random X within range
-                0f,                                  // Assuming Y is ground level
-                UnityEngine.Random.Range(-10f, 10f)  // Random Z within range
-            );
-        }
-    }
+    
+    
     void Update()
     {
         SwitchState();
