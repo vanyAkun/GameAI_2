@@ -34,7 +34,7 @@ public class NPC : MonoBehaviour
     [SerializeField]
     float AttackRange = 4f;
 
-    float FireRate = 2f;
+    float FireRate = 1f;
     int nextPatrolPoint = 0;
     NPCStates currentState = NPCStates.Patrol;
     NavMeshAgent navMeshAgent;
@@ -177,7 +177,7 @@ public class NPC : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")) // Make sure the player has a tag "Player"
+        if (other.gameObject.CompareTag("Seeker")) // Make sure the player has a tag "Player"
         {
             currentState = NPCStates.Retreat; // Change state to Retreat
         }
