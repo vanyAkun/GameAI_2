@@ -45,6 +45,9 @@ public class NPC : MonoBehaviour
     public Transform bulletPosition;
     public GameObject bulletPrefab;
 
+    private Vector3[] currentPath;
+    private int pathIndex;
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -57,6 +60,7 @@ public class NPC : MonoBehaviour
     void Update()
     {
         SwitchState();
+        FollowPath();
     }
     void Fire()
     {
@@ -110,6 +114,7 @@ public class NPC : MonoBehaviour
 
     private void Chase()
     {
+        PathRequestManager.RequestPath(transform.position, Player.position, OnPathFound);
         meshRenderer.material = ChaseMaterial; // Change material to chase material
         navMeshAgent.SetDestination(Player.position); // Set destination to player's position
 
@@ -125,7 +130,14 @@ public class NPC : MonoBehaviour
             currentState = NPCStates.Patrol;
         }
     }
-
+    public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
+    {
+        if (pathSuccessful)
+        {
+            currentPath = newPath;
+            pathIndex = 0;
+        }
+    }
     private void Patrol()
     {
         if (Vector3.Distance(transform.position, Player.position) < ChaseRange)
@@ -174,6 +186,22 @@ public class NPC : MonoBehaviour
         }
         // Debugging
         Debug.Log("Retreating to point: " + farthestPointIndex);
+    }
+    private void FollowPath()
+    {
+        if (currentState == NPCStates.Chase && currentPath != null && pathIndex < currentPath.Length)
+        {
+            navMeshAgent.SetDestination(currentPath[pathIndex]);
+
+            if (Vector3.Distance(transform.position, currentPath[pathIndex]) < 1f) // Check if close to the current waypoint
+            {
+                pathIndex++;
+                if (pathIndex >= currentPath.Length)
+                {
+                    currentPath = null;
+                }
+            }
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

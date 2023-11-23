@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System;
-using System.Linq;
 
 public class Pathfinding : MonoBehaviour {
 	
@@ -20,12 +20,16 @@ public class Pathfinding : MonoBehaviour {
 	}
 	
 	IEnumerator FindPath(Vector3 startPos, Vector3 targetPos) {
-
+		
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
+		
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
 		
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
+		startNode.parent = startNode;
 		
 		
 		if (startNode.walkable && targetNode.walkable) {
@@ -38,6 +42,8 @@ public class Pathfinding : MonoBehaviour {
 				closedSet.Add(currentNode);
 				
 				if (currentNode == targetNode) {
+					sw.Stop();
+					print ("Path found: " + sw.ElapsedMilliseconds + " ms");
 					pathSuccess = true;
 					break;
 				}
@@ -47,7 +53,7 @@ public class Pathfinding : MonoBehaviour {
 						continue;
 					}
 					
-					int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+					int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + neighbour.movementPenalty;
 					if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour)) {
 						neighbour.gCost = newMovementCostToNeighbour;
 						neighbour.hCost = GetDistance(neighbour, targetNode);
@@ -55,6 +61,8 @@ public class Pathfinding : MonoBehaviour {
 						
 						if (!openSet.Contains(neighbour))
 							openSet.Add(neighbour);
+						else 
+							openSet.UpdateItem(neighbour);
 					}
 				}
 			}
@@ -66,21 +74,20 @@ public class Pathfinding : MonoBehaviour {
 		requestManager.FinishedProcessingPath(waypoints,pathSuccess);
 		
 	}
-
-    Vector3[] RetracePath(Node startNode, Node endNode)
-    {
-        List<Node> path = new List<Node>();
-        Node currentNode = endNode;
-
-        while (currentNode != startNode)
-        {
-            path.Add(currentNode);
-            currentNode = currentNode.parent;
-        }
-        path.Reverse();
-        return path.Select(p => p.worldPosition).ToArray();
-    }
-
+	
+	Vector3[] RetracePath(Node startNode, Node endNode) {
+		List<Node> path = new List<Node>();
+		Node currentNode = endNode;
+		
+		while (currentNode != startNode) {
+			path.Add(currentNode);
+			currentNode = currentNode.parent;
+		}
+		Vector3[] waypoints = SimplifyPath(path);
+		Array.Reverse(waypoints);
+		return waypoints;
+		
+	}
 	
 	Vector3[] SimplifyPath(List<Node> path) {
 		List<Vector3> waypoints = new List<Vector3>();
