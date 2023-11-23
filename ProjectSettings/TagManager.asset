@@ -13,10 +13,10 @@ TagManager:
   - Unwalkable
   - Water
   - UI
-  - 
-  - 
-  - Player
   - NPC
+  - Ground
+  - Player
+  - Mud
   - 
   - 
   - 
