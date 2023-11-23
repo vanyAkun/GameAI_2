@@ -7,18 +7,25 @@ public class Pathfinding : MonoBehaviour
 {
     public Transform seeker, target;
     Grid grid;
+    Vector3 lastTargetPosition;// checks fior the targets last position
 
     private void Awake()
     {
         {
             grid = GetComponent<Grid>();
+            lastTargetPosition = target.position;
         }
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    FindPath(seeker.position, target.position);
+        //}
+        if (target.position != lastTargetPosition)
         {
             FindPath(seeker.position, target.position);
+            lastTargetPosition = target.position;
         }
     }
     void FindPath(Vector3 startPos, Vector3 targetPos)
