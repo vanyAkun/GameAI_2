@@ -1592,7 +1592,7 @@ PrefabInstance:
     - target: {fileID: 8731794381664694034, guid: a050c2dd7bcba9f4c84fc24e399db937,
         type: 3}
       propertyPath: m_TagString
-      value: Seeker
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8731794381664694035, guid: a050c2dd7bcba9f4c84fc24e399db937,
         type: 3}
@@ -3174,8 +3174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1708716656f1b14a9f7d74d2eba30dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeker: {fileID: 1973391181}
-  target: {fileID: 797432242}
+  seeker: {fileID: 797432242}
+  target: {fileID: 1973391181}
 --- !u!114 &2087196786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3188,6 +3188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab978fd883d7240b069399a1778b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyDisplayPathGizmos: 0
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 8
@@ -3329,6 +3330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 1670708093994714235, guid: d6dd262dd005c9042a412a1497e13ab5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Seeker
       objectReference: {fileID: 0}
     - target: {fileID: 2633672963972688056, guid: d6dd262dd005c9042a412a1497e13ab5,
         type: 3}
