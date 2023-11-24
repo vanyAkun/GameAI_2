@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Pathfinding : MonoBehaviour {
 
 	public Transform seeker;
-    public List<Transform> targets;
+    public Transform currentTarget;
 
     Grid grid;
 
@@ -14,13 +14,16 @@ public class Pathfinding : MonoBehaviour {
 	}
 
 	void Update() {
-        foreach (Transform target in targets)
+        if (currentTarget != null)
         {
-            FindPath(seeker.position, target.position);
+            FindPath(seeker.position, currentTarget.position);
         }
     }
-
-	void FindPath(Vector3 startPos, Vector3 targetPos) {
+    public void SetTarget(Transform newTarget)
+    {
+        currentTarget = newTarget;
+    }
+    void FindPath(Vector3 startPos, Vector3 targetPos) {
 
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
