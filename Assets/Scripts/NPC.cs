@@ -18,7 +18,7 @@ public class NPC : MonoBehaviour
         Chase,
         Attack,
         Retreat,
-
+        Help
     }
 
     [SerializeField]   Vector3[] PatrolPoints;
@@ -30,6 +30,7 @@ public class NPC : MonoBehaviour
     [SerializeField] Material RetreatMaterial;
     [SerializeField] float ChaseRange = 7f;
     [SerializeField] float AttackRange = 4f;
+
  
     int nextPatrolPoint = 0;
     NPCStates currentState = NPCStates.Patrol;
@@ -56,6 +57,10 @@ public class NPC : MonoBehaviour
     
     void Update()
     {
+        if (health <= 0)
+        {
+            currentState = NPCStates.Help;
+        }
         SwitchState();
         UpdateStateText();
         if (stateText != null)
@@ -68,6 +73,23 @@ public class NPC : MonoBehaviour
             }
 
         }
+    }
+    private void Help()
+    {
+        // Stop moving and wait for help
+        navMeshAgent.isStopped = true;
+       // meshRenderer.material = /* some material to indicate Help state */
+
+        // Logic for being revived by other NPCs would be implemented here
+        // For example, this could be handled in OnTriggerEnter
+    }
+
+    void Revive()
+    {
+        // Revive logic: restore health and return to Patrol state
+        health = 100;
+        currentState = NPCStates.Patrol;
+        navMeshAgent.isStopped = false;
     }
     void Fire()
     {
@@ -95,6 +117,9 @@ public class NPC : MonoBehaviour
                 break;
             case NPCStates.Retreat:
                 Retreat();
+                break;
+            case NPCStates.Help:
+                Help();
                 break;
             default:
                 Patrol();
@@ -201,6 +226,10 @@ public class NPC : MonoBehaviour
         {
             currentState = NPCStates.Retreat; // Change state to Retreat
         }
+        if (other.gameObject.CompareTag("Healer") && currentState == NPCStates.Help)
+        {
+            Revive();
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -220,10 +249,7 @@ public class NPC : MonoBehaviour
             healthText.text = "HP " + health;
         }
 
-        if (health <= 0)
-        {
-            gameObject.SetActive(false);
-        }
+       
     }
 }
 
