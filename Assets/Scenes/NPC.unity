@@ -876,7 +876,7 @@ MonoBehaviour:
     type: 3}
   bulletPosition: {fileID: 589650168}
   health: 100
-  healthBar: {fileID: 2140615769}
+  healthBar: {fileID: 1347998725}
 --- !u!4 &508350752 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6040020149309393809, guid: d6dd262dd005c9042a412a1497e13ab5,
@@ -2914,6 +2914,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1270288545}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1347998725 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7652885989696997033, guid: 003ba0168e97d3f4f8f2847621d6f159,
+    type: 3}
+  m_PrefabInstance: {fileID: 742759597}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1361496390
 GameObject:
   m_ObjectHideFlags: 0
@@ -4173,7 +4185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab978fd883d7240b069399a1778b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onlyDisplayPathGizmos: 0
+  onlyDisplayPathGizmos: 1
   showGizmos: 1
   unwalkableMask:
     serializedVersion: 2
@@ -4328,18 +4340,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 003ba0168e97d3f4f8f2847621d6f159, type: 3}
---- !u!114 &2140615769 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7652885989696997033, guid: 003ba0168e97d3f4f8f2847621d6f159,
-    type: 3}
-  m_PrefabInstance: {fileID: 2091453794}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2141456950
 PrefabInstance:
   m_ObjectHideFlags: 0
