@@ -17,29 +17,20 @@ public class NPC : MonoBehaviour
         Patrol,
         Chase,
         Attack,
-        Retreat
+        Retreat,
+
     }
 
-    [SerializeField]
-    Vector3[] PatrolPoints;
-    [SerializeField]
-    Transform Player;
-    [SerializeField]
-    Bullet Bullet;
-    [SerializeField]
-    Material PatrolMaterial;
-    [SerializeField]
-    Material ChaseMaterial;
-    [SerializeField]
-    Material AttackMaterial;
-    [SerializeField]
-    Material RetreatMaterial;
-    [SerializeField]
-    float ChaseRange = 7f;
-    [SerializeField]
-    float AttackRange = 4f;
-
-    
+    [SerializeField]   Vector3[] PatrolPoints;
+    [SerializeField]Transform Player;
+    [SerializeField]  Bullet Bullet;
+    [SerializeField]  Material PatrolMaterial;
+    [SerializeField] Material ChaseMaterial;
+    [SerializeField]  Material AttackMaterial;
+    [SerializeField] Material RetreatMaterial;
+    [SerializeField] float ChaseRange = 7f;
+    [SerializeField] float AttackRange = 4f;
+ 
     int nextPatrolPoint = 0;
     NPCStates currentState = NPCStates.Patrol;
     NavMeshAgent navMeshAgent;
@@ -204,7 +195,7 @@ public class NPC : MonoBehaviour
         }
     }
 
-        private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Seeker")) // Make sure the player has a tag "Player"
         {
