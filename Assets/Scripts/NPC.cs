@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = UnityEngine.Random;
+using UnityEngine.UI;
+
 
 public class NPC : MonoBehaviour
 {
@@ -34,16 +35,20 @@ public class NPC : MonoBehaviour
     [SerializeField]
     float AttackRange = 4f;
 
-    float FireRate = 1f;
+    
     int nextPatrolPoint = 0;
     NPCStates currentState = NPCStates.Patrol;
     NavMeshAgent navMeshAgent;
     MeshRenderer meshRenderer;
 
-    float nextShootTime = 0;
-
+    float nextFire;
+   
+    float FireRate = 1f;
     public Transform bulletPosition;
     public GameObject bulletPrefab;
+    public int health = 100;
+
+    public Slider healthBar;
 
     void Start()
     {
@@ -60,9 +65,9 @@ public class NPC : MonoBehaviour
     }
     void Fire()
     {
-        if (Time.time > nextShootTime)
+        if (Time.time > nextFire)
         {
-            nextShootTime = Time.time + FireRate;
+            nextFire = Time.time + FireRate;
 
             GameObject bullet = Instantiate(bulletPrefab, bulletPosition.position, Quaternion.identity);
             bullet.GetComponent<Bullet>()?.InitializeBullet(transform.rotation * Vector3.forward);
@@ -180,6 +185,26 @@ public class NPC : MonoBehaviour
         if (other.gameObject.CompareTag("Seeker")) // Make sure the player has a tag "Player"
         {
             currentState = NPCStates.Retreat; // Change state to Retreat
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            TakeDamage(bullet.damage);
+        }
+    }
+    void TakeDamage(int damage)
+    {
+        Debug.Log("Damage Taken: " + damage);
+        health -= damage;
+        Debug.Log("New Health: " + health);
+        healthBar.value = health / 100f;
+
+        if (health < 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }

@@ -41,16 +41,10 @@ public class AgentController : MonoBehaviour
             transform.LookAt(transform.position + movementDirection);
             agent.Move(movement * movementSpeed * Time.deltaTime);
         }
-        //if (Input.GetKeyDown(KeyCode.Mouse0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit hit;
-
-        //    if (Physics.Raycast(ray, out hit))
-        //    {
-        //        agent.SetDestination(hit.point);
-        //    }
-        //}
+        if (health <= 0)
+        {
+            Respawn();
+        }
     }
 
     // Update is called once per frame
@@ -81,18 +75,32 @@ public class AgentController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            // TakeDamage(bullet.damage);
+             TakeDamage(bullet.damage);
         }
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
+        Debug.Log("Damage Taken: " + damage);
         health -= damage;
+        Debug.Log("New Health: " + health);
         healthBar.value = health / 100f;
 
+        if (health <= 0)
+        {
+            Respawn();
+        }
+    }
+    void Respawn()
+    {
+        // Respawn logic here. This could be as simple as resetting the health
+        // and placing the character back at a start position.
+        health = 100;
+        healthBar.value = 1;
+        //transform.position = /* Your respawn position here */
+        // You might also want to reset other states or properties.
     }
 
-
-
-
 }
+
+    
