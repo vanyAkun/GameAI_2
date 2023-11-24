@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class NPC : MonoBehaviour
 {
     public TextMeshProUGUI stateText;
+    public TextMeshProUGUI healthText;
+    public string npcID = "NPC";
     public enum NPCStates
     {
         Patrol,
@@ -50,7 +52,7 @@ public class NPC : MonoBehaviour
     public GameObject bulletPrefab;
     public int health = 100;
 
-    public Slider healthBar;
+   
 
     void Start()
     {
@@ -67,7 +69,13 @@ public class NPC : MonoBehaviour
         UpdateStateText();
         if (stateText != null)
         {
-            stateText.transform.position = transform.position + Vector3.up * 2; // Adjust as needed
+            stateText.text = $"{npcID} State: {currentState}";
+            Debug.Log("Updated Text: " + stateText.text);
+            if (healthText != null)
+            {
+                healthText.text = "HP " + health;
+            }
+
         }
     }
     void Fire()
@@ -216,9 +224,12 @@ public class NPC : MonoBehaviour
         Debug.Log("Damage Taken: " + damage);
         health -= damage;
         Debug.Log("New Health: " + health);
-        healthBar.value = health / 100f;
+        if (healthText != null)
+        {
+            healthText.text = "HP " + health;
+        }
 
-        if (health < 0)
+        if (health <= 0)
         {
             gameObject.SetActive(false);
         }
