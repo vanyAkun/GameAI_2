@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AgentController : MonoBehaviour
 {
     public float movementSpeed = 10f;
+    Vector3 movementDirection;
 
     NavMeshAgent agent;
 
@@ -29,16 +30,27 @@ public class AgentController : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                agent.SetDestination(hit.point);
-            }
+        Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput);
+        movementDirection = movement.normalized;
+
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            transform.LookAt(transform.position + movementDirection);
+            agent.Move(movement * movementSpeed * Time.deltaTime);
         }
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
+
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        agent.SetDestination(hit.point);
+        //    }
+        //}
     }
 
     // Update is called once per frame

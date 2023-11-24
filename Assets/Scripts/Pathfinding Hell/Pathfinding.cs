@@ -4,17 +4,21 @@ using System.Collections.Generic;
 
 public class Pathfinding : MonoBehaviour {
 
-	public Transform seeker, target;
-	
-	Grid grid;
+	public Transform seeker;
+    public List<Transform> targets;
+
+    Grid grid;
 
 	void Awake() {
 		grid = GetComponent<Grid>();
 	}
 
 	void Update() {
-		FindPath(seeker.position,target.position);
-	}
+        foreach (Transform target in targets)
+        {
+            FindPath(seeker.position, target.position);
+        }
+    }
 
 	void FindPath(Vector3 startPos, Vector3 targetPos) {
 
