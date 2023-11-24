@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
+    public TextMeshProUGUI stateText;
     public enum NPCStates
     {
         Patrol,
@@ -62,6 +64,11 @@ public class NPC : MonoBehaviour
     void Update()
     {
         SwitchState();
+        UpdateStateText();
+        if (stateText != null)
+        {
+            stateText.transform.position = transform.position + Vector3.up * 2; // Adjust as needed
+        }
     }
     void Fire()
     {
@@ -180,7 +187,16 @@ public class NPC : MonoBehaviour
         // Debugging
         Debug.Log("Retreating to point: " + farthestPointIndex);
     }
-    private void OnTriggerEnter(Collider other)
+    private void UpdateStateText()
+    {
+        if (stateText != null)
+        {
+            stateText.text = $"NPC State: {currentState}";
+            Debug.Log("Updated Text: " + stateText.text); // Debugging line
+        }
+    }
+
+        private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Seeker")) // Make sure the player has a tag "Player"
         {
