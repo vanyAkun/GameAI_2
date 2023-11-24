@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class Grid : MonoBehaviour {
 
 	public bool onlyDisplayPathGizmos;
-	public LayerMask unwalkableMask;
+    public bool showGizmos = true;
+
+    public LayerMask unwalkableMask;
 	public Vector2 gridWorldSize;
 	public float nodeRadius;
 	Node[,] grid;
@@ -73,6 +75,7 @@ public class Grid : MonoBehaviour {
 
 	public List<Node> path;
 	void OnDrawGizmos() {
+		 if (!showGizmos) return;
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,1,gridWorldSize.y));
 
 		if (onlyDisplayPathGizmos) {
@@ -95,5 +98,11 @@ public class Grid : MonoBehaviour {
 				}
 			}
 		}
+
 	}
+    public void ToggleGizmosVisibility()
+    {
+        showGizmos = !showGizmos;
+    }
+
 }
