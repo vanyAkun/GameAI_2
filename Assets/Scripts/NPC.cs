@@ -191,7 +191,7 @@ public class NPC : MonoBehaviour
     {
         if (stateText != null)
         {
-            stateText.text = $"NPC State: {currentState}";
+            stateText.text = $" State: {currentState}";
             Debug.Log("Updated Text: " + stateText.text); // Debugging line
         }
     }
