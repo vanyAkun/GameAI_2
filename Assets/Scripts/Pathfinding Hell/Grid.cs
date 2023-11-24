@@ -13,15 +13,14 @@ public class Grid : MonoBehaviour {
 	float nodeDiameter;
 	int gridSizeX, gridSizeY;
 
-    void Start() {
+	void Start() {
 		nodeDiameter = nodeRadius*2;
 		gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
 		gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
 		CreateGrid();
 	}
 
-
-    public int MaxSize {
+	public int MaxSize {
 		get {
 			return gridSizeX * gridSizeY;
 		}
