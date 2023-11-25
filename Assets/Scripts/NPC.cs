@@ -57,12 +57,21 @@ public class NPC : MonoBehaviour
     
     void Update()
     {
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            return; // Ensure no further code is executed after destruction
+        }
+
         if (health <= 20 && currentState != NPCStates.HealRetreat)
         {
             currentState = NPCStates.HealRetreat;
         }
+        else
+        {
+            SwitchState(); // Use the probability-based method
+        }
 
-        SwitchState();
         UpdateStateText();
         if (stateText != null)
         {
@@ -72,8 +81,8 @@ public class NPC : MonoBehaviour
             {
                 healthText.text = "HP " + health;
             }
-
         }
+    
     }
 
     void Fire()
