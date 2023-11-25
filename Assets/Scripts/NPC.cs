@@ -18,15 +18,15 @@ public class NPC : MonoBehaviour
         Chase,
         Attack,
         Retreat,
-        Help
+        HealRetreat
     }
 
-    [SerializeField]   Vector3[] PatrolPoints;
+    [SerializeField] Vector3[] PatrolPoints;
     [SerializeField]Transform Player;
-    [SerializeField]  Bullet Bullet;
-    [SerializeField]  Material PatrolMaterial;
+    [SerializeField] Bullet Bullet;
+    [SerializeField] Material PatrolMaterial;
     [SerializeField] Material ChaseMaterial;
-    [SerializeField]  Material AttackMaterial;
+    [SerializeField] Material AttackMaterial;
     [SerializeField] Material RetreatMaterial;
     [SerializeField] float ChaseRange = 7f;
     [SerializeField] float AttackRange = 4f;
@@ -57,10 +57,11 @@ public class NPC : MonoBehaviour
     
     void Update()
     {
-        if (health <= 0)
+        if (health <= 20 && currentState != NPCStates.HealRetreat)
         {
-            currentState = NPCStates.Help;
+            currentState = NPCStates.HealRetreat;
         }
+
         SwitchState();
         UpdateStateText();
         if (stateText != null)
@@ -74,23 +75,7 @@ public class NPC : MonoBehaviour
 
         }
     }
-    private void Help()
-    {
-        // Stop moving and wait for help
-        navMeshAgent.isStopped = true;
-       // meshRenderer.material = /* some material to indicate Help state */
 
-        // Logic for being revived by other NPCs would be implemented here
-        // For example, this could be handled in OnTriggerEnter
-    }
-
-    void Revive()
-    {
-        // Revive logic: restore health and return to Patrol state
-        health = 100;
-        currentState = NPCStates.Patrol;
-        navMeshAgent.isStopped = false;
-    }
     void Fire()
     {
         if (Time.time > nextFire)
@@ -115,11 +100,11 @@ public class NPC : MonoBehaviour
             case NPCStates.Attack:
                 Attack();
                 break;
+            case NPCStates.HealRetreat:
+                HealRetreat();
+                break;
             case NPCStates.Retreat:
                 Retreat();
-                break;
-            case NPCStates.Help:
-                Help();
                 break;
             default:
                 Patrol();
@@ -211,6 +196,39 @@ public class NPC : MonoBehaviour
         // Debugging
         Debug.Log("Retreating to point: " + farthestPointIndex);
     }
+    private void HealRetreat()
+    {
+        int farthestPointIndex = 0;
+        float maxDistance = 0;
+        for (int i = 0; i < PatrolPoints.Length; i++)
+        {
+            float distance = Vector3.Distance(PatrolPoints[i], Player.position);
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                farthestPointIndex = i;
+            }
+        }
+
+        // Set the destination to the farthest patrol point
+        navMeshAgent.isStopped = false;
+        navMeshAgent.SetDestination(PatrolPoints[farthestPointIndex]);
+        meshRenderer.material = RetreatMaterial; // You can choose to have a different material for HealRetreat if you like
+
+        // Check if NPC has reached the retreat point and heal if necessary
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        {
+            if (health < 100)
+            {
+                health++; // Slowly regenerate health
+            }
+            else
+            {
+                currentState = NPCStates.Patrol; // Return to patrol once healed
+                meshRenderer.material = PatrolMaterial; // Reset material to patrol material
+            }
+        }
+    }
     private void UpdateStateText()
     {
         if (stateText != null)
@@ -226,10 +244,7 @@ public class NPC : MonoBehaviour
         {
             currentState = NPCStates.Retreat; // Change state to Retreat
         }
-        if (other.gameObject.CompareTag("Healer") && currentState == NPCStates.Help)
-        {
-            Revive();
-        }
+    
     }
     private void OnCollisionEnter(Collision collision)
     {
